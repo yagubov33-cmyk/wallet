@@ -14,34 +14,73 @@
 </head>
 <body data-theme="dark">
   <div class="background-gradient"></div>
-  <header class="app-header">
-    <div class="brand">
-      <div class="brand-logo">WS</div>
-      <div class="brand-text">
-        <h1>Wallet Summary</h1>
-        <p>Your personal finance overview in one place.</p>
-      </div>
-    </div>
-    <div class="header-actions">
-      <button id="theme-toggle" class="icon-button" type="button" aria-label="Toggle theme">
-        <span class="icon-moon" aria-hidden="true"></span>
-        <span class="icon-sun" aria-hidden="true"></span>
-      </button>
-      <div class="export-menu">
-        <button id="export-button" class="icon-button" type="button">
-          <span class="icon-download" aria-hidden="true"></span>
-          <span class="export-label">Export</span>
-        </button>
-        <div class="export-menu-panel" id="export-menu-panel">
-          <button type="button" data-export="csv">Export CSV</button>
-          <button type="button" data-export="json">Export JSON</button>
+  <div class="app-shell">
+    <aside class="app-sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo">WS</div>
+        <div class="sidebar-title">
+          <h1>WALLET</h1>
+          <span>Personal dashboard</span>
         </div>
       </div>
-    </div>
-  </header>
+      <div>
+        <div class="sidebar-section-label">Overview</div>
+        <button class="sidebar-nav-button primary" type="button">
+          <span class="sidebar-nav-label">
+            <span class="sidebar-dot"></span>
+            Summary
+          </span>
+          <span>Today</span>
+        </button>
+        <button class="sidebar-nav-button" type="button">
+          <span class="sidebar-nav-label">
+            Wallets
+          </span>
+          <span>Configure</span>
+        </button>
+        <button class="sidebar-nav-button" type="button">
+          <span class="sidebar-nav-label">
+            Transactions
+          </span>
+          <span>History</span>
+        </button>
+      </div>
+      <div class="sidebar-kpi">
+        <div class="sidebar-kpi-label">Total balance</div>
+        <div class="sidebar-kpi-value" id="sidebar-total-balance-placeholder">Live from analytics</div>
+        <div class="sidebar-kpi-sub">Local-only · Private to this device</div>
+      </div>
+    </aside>
 
-  <main class="app-main">
-    <section class="card input-card">
+    <div class="app-shell-main">
+      <header class="app-header">
+        <div class="brand">
+          <div class="brand-logo">WS</div>
+          <div class="brand-text">
+            <h1>Wallet Summary</h1>
+            <p>Your personal finance overview in one place.</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button id="theme-toggle" class="icon-button" type="button" aria-label="Toggle theme">
+            <span class="icon-moon" aria-hidden="true"></span>
+            <span class="icon-sun" aria-hidden="true"></span>
+          </button>
+          <div class="export-menu">
+            <button id="export-button" class="icon-button" type="button">
+              <span class="icon-download" aria-hidden="true"></span>
+              <span class="export-label">Export</span>
+            </button>
+            <div class="export-menu-panel" id="export-menu-panel">
+              <button type="button" data-export="csv">Export CSV</button>
+              <button type="button" data-export="json">Export JSON</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="app-main">
+        <section class="card input-card">
       <h2>Wallets</h2>
       <p class="helper-text">
         Define your wallets (bank accounts, cash, crypto). Names must be unique.
@@ -93,9 +132,9 @@
       <div class="wallet-list" id="wallet-list">
         <!-- Wallet rows rendered here -->
       </div>
-    </section>
+        </section>
 
-    <section class="card transactions-card">
+        <section class="card transactions-card">
       <h2>Transactions</h2>
       <p class="helper-text">
         Track income and expenses per wallet. Balances update automatically.
@@ -199,9 +238,9 @@
           No transactions yet.
         </div>
       </div>
-    </section>
+        </section>
 
-    <section class="card summary-card">
+        <section class="card summary-card">
       <h2>Analytics</h2>
       <div class="summary-grid">
         <div class="summary-item">
@@ -272,12 +311,14 @@
       <p class="helper-text small">
         Data is stored only in your browser (localStorage). Nothing is sent anywhere.
       </p>
-    </section>
-  </main>
+        </section>
+      </main>
 
-  <footer class="app-footer">
-    <p>Wallet Summary · Local-only personal finance dashboard</p>
-  </footer>
+      <footer class="app-footer">
+        <p>Wallet Summary · Local-only personal finance dashboard</p>
+      </footer>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module" src="main.js"></script>

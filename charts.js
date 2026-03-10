@@ -52,12 +52,12 @@ export function initCharts(analytics) {
         {
           label: "Income",
           data: monthlyData.income,
-          backgroundColor: "rgba(34, 197, 94, 0.7)",
+          backgroundColor: "#22c55e",
         },
         {
           label: "Expenses",
           data: monthlyData.expense,
-          backgroundColor: "rgba(248, 113, 113, 0.8)",
+          backgroundColor: "#ef4444",
         },
       ],
     },
@@ -168,14 +168,14 @@ function toWalletData(byWalletSpending) {
 
 function generateColors(count) {
   const baseColors = [
-    "#38bdf8",
-    "#f97373",
-    "#facc15",
-    "#a855f7",
+    "#3b82f6",
     "#22c55e",
-    "#fb923c",
+    "#f59e0b",
+    "#ef4444",
     "#6366f1",
-    "#ec4899",
+    "#0ea5e9",
+    "#22c55e",
+    "#f97316",
   ];
   if (count <= baseColors.length) return baseColors.slice(0, count);
   const colors = [];
