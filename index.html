@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wallet Summary Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body data-theme="dark">
+  <div class="background-gradient"></div>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo">WS</div>
+      <div class="brand-text">
+        <h1>Wallet Summary</h1>
+        <p>Your personal finance overview in one place.</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-button" type="button" aria-label="Toggle theme">
+        <span class="icon-moon" aria-hidden="true"></span>
+        <span class="icon-sun" aria-hidden="true"></span>
+      </button>
+      <div class="export-menu">
+        <button id="export-button" class="icon-button" type="button">
+          <span class="icon-download" aria-hidden="true"></span>
+          <span class="export-label">Export</span>
+        </button>
+        <div class="export-menu-panel" id="export-menu-panel">
+          <button type="button" data-export="csv">Export CSV</button>
+          <button type="button" data-export="json">Export JSON</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <section class="card input-card">
+      <h2>Wallets</h2>
+      <p class="helper-text">
+        Define your wallets (bank accounts, cash, crypto). Names must be unique.
+      </p>
+
+      <form id="wallet-form" class="wallet-form">
+        <input type="hidden" id="wallet-id" />
+        <div class="form-row">
+          <div class="field">
+            <label for="wallet-name">Name</label>
+            <input
+              id="wallet-name"
+              type="text"
+              placeholder="e.g. Main Bank, Cash, BTC"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="wallet-type">Type</label>
+            <select id="wallet-type">
+              <option value="bank">Bank</option>
+              <option value="cash">Cash</option>
+              <option value="crypto">Crypto</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="wallet-balance">Starting balance</label>
+            <input
+              id="wallet-balance"
+              type="number"
+              step="0.01"
+              placeholder="0.00"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn" id="wallet-submit-button">
+            Save wallet
+          </button>
+          <button type="button" class="ghost-btn" id="wallet-cancel-edit">
+            Cancel edit
+          </button>
+          <span class="form-error" id="wallet-error"></span>
+        </div>
+      </form>
+
+      <div class="wallet-list" id="wallet-list">
+        <!-- Wallet rows rendered here -->
+      </div>
+    </section>
+
+    <section class="card transactions-card">
+      <h2>Transactions</h2>
+      <p class="helper-text">
+        Track income and expenses per wallet. Balances update automatically.
+      </p>
+
+      <form id="transaction-form" class="transaction-form">
+        <div class="form-row form-row--transactions">
+          <div class="field">
+            <label for="transaction-wallet">Wallet</label>
+            <select id="transaction-wallet" required></select>
+          </div>
+          <div class="field">
+            <label for="transaction-type">Type</label>
+            <select id="transaction-type">
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="transaction-amount">Amount</label>
+            <input
+              id="transaction-amount"
+              type="number"
+              step="0.01"
+              placeholder="0.00"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-row form-row--transactions">
+          <div class="field">
+            <label for="transaction-category">Category</label>
+            <input
+              id="transaction-category"
+              type="text"
+              placeholder="e.g. Groceries, Salary"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="transaction-date">Date</label>
+            <input id="transaction-date" type="date" required />
+          </div>
+          <div class="field">
+            <label for="transaction-note">Note (optional)</label>
+            <input id="transaction-note" type="text" placeholder="Optional note" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn">Add transaction</button>
+          <span class="form-error" id="transaction-error"></span>
+        </div>
+      </form>
+
+      <div class="transactions-filters">
+        <div class="field">
+          <label for="filter-wallet">Wallet</label>
+          <select id="filter-wallet">
+            <option value="">All</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="filter-type">Type</label>
+          <select id="filter-type">
+            <option value="">All</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="filter-category">Category</label>
+          <input id="filter-category" type="text" placeholder="Search category" />
+        </div>
+        <div class="field">
+          <label for="filter-date-from">From</label>
+          <input id="filter-date-from" type="date" />
+        </div>
+        <div class="field">
+          <label for="filter-date-to">To</label>
+          <input id="filter-date-to" type="date" />
+        </div>
+      </div>
+
+      <div class="transactions-table-wrapper">
+        <table class="transactions-table" id="transactions-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Wallet</th>
+              <th>Type</th>
+              <th>Category</th>
+              <th class="align-right">Amount</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody id="transactions-tbody">
+            <!-- Transactions rendered here -->
+          </tbody>
+        </table>
+        <div class="transactions-empty" id="transactions-empty">
+          No transactions yet.
+        </div>
+      </div>
+    </section>
+
+    <section class="card summary-card">
+      <h2>Analytics</h2>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span class="summary-label">Total balance</span>
+          <span class="summary-value" id="total-balance">$0.00</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Wallets</span>
+          <span class="summary-value" id="wallet-count">0</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Net (income - expenses)</span>
+          <span class="summary-value" id="net-balance">$0.00</span>
+        </div>
+      </div>
+
+      <div class="summary-grid summary-grid--secondary">
+        <div class="summary-item">
+          <span class="summary-label">Total income</span>
+          <span class="summary-value" id="total-income">$0.00</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Total expenses</span>
+          <span class="summary-value" id="total-expenses">$0.00</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Average per wallet</span>
+          <span class="summary-value" id="avg-balance">$0.00</span>
+        </div>
+      </div>
+
+      <h3 class="summary-subtitle">By type</h3>
+      <div class="summary-grid summary-types">
+        <div class="summary-item">
+          <span class="summary-label">Bank</span>
+          <span class="summary-value" id="sum-bank">$0.00</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Cash</span>
+          <span class="summary-value" id="sum-cash">$0.00</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Crypto</span>
+          <span class="summary-value" id="sum-crypto">$0.00</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Other</span>
+          <span class="summary-value" id="sum-other">$0.00</span>
+        </div>
+      </div>
+
+      <h3 class="summary-subtitle">Charts</h3>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h4>Spending by category</h4>
+          <canvas id="chart-category"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>Income vs expenses (monthly)</h4>
+          <canvas id="chart-monthly"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>Wallet distribution</h4>
+          <canvas id="chart-wallets"></canvas>
+        </div>
+      </div>
+
+      <p class="helper-text small">
+        Data is stored only in your browser (localStorage). Nothing is sent anywhere.
+      </p>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>Wallet Summary · Local-only personal finance dashboard</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
+
